@@ -1,0 +1,46 @@
+_subdirectory: "template"
+_tasks:
+  - [
+      "git", "add",
+      ".readthedocs.yml", ".github/workflows/documentation-links.yml",
+      "docs/readthedocs.js",
+  ]
+  - ["uv", "run", "injectors/md_files.py"]
+  - ["uv", "run", "injectors/update_docs.py"]
+  - ["uv", "run", "injectors/inject_containerfile.py"]
+  - ["rm", "-r", "injectors"]
+  - command: [
+    "uvx", "--quiet", "--no-progress", "reuse", "annotate",
+    "--copyright", "{{ author }} <{{ author_email }}>",
+    "--license", "{{ code_license_id }}",
+    "--copyright-prefix", "spdx-symbol",
+    "--style", "python",
+    ".readthedocs.yml", ".github/workflows/documentation-links.yml",
+  ]
+    when: "{{ code_license_id != '' }}"
+  - command: [
+    "uvx", "--quiet", "--no-progress", "reuse", "annotate",
+    "--copyright", "SPDX-FileCopyrightText: {{ header }}",
+    "--license", "LicenseRef-PROPRIETARY",
+    "--style", "python",
+    ".readthedocs.yml", ".github/workflows/documentation-links.yml",
+  ]
+    when: "{{ code_license_id == '' }}"
+  - command: [
+    "uvx", "--quiet", "--no-progress", "reuse", "annotate",
+    "--copyright", "{{ author }} <{{ author_email }}>",
+    "--license", "{{ code_license_id }}",
+    "--copyright-prefix", "spdx-symbol",
+    "--style", "c", "docs/readthedocs.js",
+  ]
+    when: "{{ code_license_id != '' }}"
+  - command: [
+    "uvx", "--quiet", "--no-progress", "reuse", "annotate",
+    "--copyright", "SPDX-FileCopyrightText: {{ header }}",
+    "--license", "LicenseRef-PROPRIETARY",
+    "--style", "c", "docs/readthedocs.js",
+  ]
+    when: "{{ code_license_id == '' }}"
+  - ["git", "add", "--update"]
+  - ["git", "commit", "--message", "feat: ✨ add ReadTheDocs integration"]
+  - ["git", "push"]

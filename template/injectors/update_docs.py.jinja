@@ -1,0 +1,76 @@
+# /// script
+# requires-python = ">=3.9"
+# dependencies = []
+# ///
+"""Module to update `pyproject.toml` with new entry points."""
+
+from pathlib import Path
+
+
+def main() -> None:
+    """Edit documentation configuration file."""
+    docs_file = Path("docs/conf.py")
+    docs = docs_file.read_text()
+
+    source = """
+html_theme = "pydata_sphinx_theme"
+"""
+    if source not in docs:
+        raise ValueError("Replacement failed.")
+
+    docs = docs.replace(
+        source,
+"""
+html_baseurl = os.environ.get("READTHEDOCS_CANONICAL_URL", "/")
+html_js_files = [
+    "readthedocs.js",
+]
+html_theme = "pydata_sphinx_theme"
+""",
+    ).replace(
+"""
+from importlib import metadata
+""",
+"""
+import os
+from importlib import metadata
+""",
+        )
+
+    source = """
+html_theme_options = {
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/{{ organisation }}/{% include pathjoin('includes', 'project_slug.jinja') %}",
+            "icon": "fa-brands fa-square-github",
+            "type": "fontawesome",
+        },
+"""
+    if source not in docs:
+        raise ValueError("Replacement failed.")
+
+    docs = docs.replace(
+        source,
+"""
+html_theme_options = {
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/{{ organisation }}/{% include pathjoin('includes', 'project_slug.jinja') %}",
+            "icon": "fa-brands fa-square-github",
+            "type": "fontawesome",
+        },
+        {
+            "name": "ReadTheDocs",
+            "url": "https://readthedocs.org/projects/{% include pathjoin('includes', 'project_slug.jinja') %}",
+            "icon": "fa-solid fa-book",
+            "type": "fontawesome",
+        },
+""",
+    )
+
+    docs_file.write_text(docs)
+
+if __name__ == "__main__":
+    main()

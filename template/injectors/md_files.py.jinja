@@ -1,0 +1,56 @@
+# /// script
+# requires-python = ">=3.9"
+# dependencies = []
+# ///
+
+"""Update Markdown files."""
+
+
+from pathlib import Path
+
+
+def update_readme() -> None:
+    """Update README.md."""
+    readme_file = Path("README.md")
+    readme = readme_file.read_text("utf-8")
+    source = """
+        <a href="https://www.contributor-covenant.org/version/2/1/code_of_conduct/"><img alt="contributor covenant badge" src="https://img.shields.io/badge/Contributor_Covenant-2.1-4BAAAA.svg?logo=contributorcovenant"/></a>
+"""
+    if source not in readme:
+        raise ValueError("Replacement failed.")
+
+    readme = readme.replace(
+        source,
+"""
+        <a href='https://readthedocs.org/projects/{% include pathjoin('includes', 'project_slug.jinja') %}/'><img src='https://readthedocs.org/projects/{% include pathjoin('includes', 'project_slug.jinja') %}/badge/?version=latest' alt='Documentation Status' /></a>
+        <a href="https://www.contributor-covenant.org/version/2/1/code_of_conduct/"><img alt="contributor covenant badge" src="https://img.shields.io/badge/Contributor_Covenant-2.1-4BAAAA.svg?logo=contributorcovenant"/></a>
+"""
+    )
+
+    source = """
+## Install
+"""
+    if source not in readme:
+        raise ValueError("Replacement failed.")
+
+    readme = readme.replace(
+        source,
+"""
+## Documentation
+
+See: https://{% include pathjoin('includes', 'project_slug.jinja') %}.readthedocs.io/en/stable/.
+
+## Install
+"""
+    )
+
+    readme_file.write_text(readme, encoding="utf-8")
+
+
+def main() -> None:
+    update_readme()
+
+
+if __name__ == "__main__":
+    main()
+
