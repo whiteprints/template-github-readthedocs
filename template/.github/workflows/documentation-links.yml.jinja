@@ -13,4 +13,4 @@ jobs:
     steps:
       - uses: readthedocs/actions/preview@v1
         with:
-          project-slug: "{% include pathjoin('includes', 'project_slug.jinja') %}"
+          project-slug: "{{ project_slug }}"

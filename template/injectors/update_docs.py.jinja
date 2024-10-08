@@ -42,7 +42,7 @@ html_theme_options = {
     "icon_links": [
         {
             "name": "GitHub",
-            "url": "https://github.com/{{ organisation }}/{% include pathjoin('includes', 'project_slug.jinja') %}",
+            "url": "https://github.com/{{ organisation }}/{{ project_slug }}",
             "icon": "fa-brands fa-square-github",
             "type": "fontawesome",
         },
@@ -57,13 +57,13 @@ html_theme_options = {
     "icon_links": [
         {
             "name": "GitHub",
-            "url": "https://github.com/{{ organisation }}/{% include pathjoin('includes', 'project_slug.jinja') %}",
+            "url": "https://github.com/{{ organisation }}/{{ project_slug }}",
             "icon": "fa-brands fa-square-github",
             "type": "fontawesome",
         },
         {
             "name": "ReadTheDocs",
-            "url": "https://readthedocs.org/projects/{% include pathjoin('includes', 'project_slug.jinja') %}",
+            "url": "https://readthedocs.org/projects/{{ project_slug }}",
             "icon": "fa-solid fa-book",
             "type": "fontawesome",
         },

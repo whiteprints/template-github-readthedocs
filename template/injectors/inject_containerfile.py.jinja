@@ -21,7 +21,7 @@ def main() -> None:
 
         containerfile = containerfile.replace(
             source,
-            "org.opencontainers.image.documentation='https://readthedocs.org/projects/{% include pathjoin('includes', 'project_slug.jinja') %}'",
+            "org.opencontainers.image.documentation='https://readthedocs.org/projects/{{ project_slug }}'",
         )
         containerfile_path.write_text(containerfile)
 

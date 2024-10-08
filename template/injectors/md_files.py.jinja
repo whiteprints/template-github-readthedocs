@@ -22,7 +22,7 @@ def update_readme() -> None:
     readme = readme.replace(
         source,
 """
-        <a href='https://readthedocs.org/projects/{% include pathjoin('includes', 'project_slug.jinja') %}/'><img src='https://readthedocs.org/projects/{% include pathjoin('includes', 'project_slug.jinja') %}/badge/?version=latest' alt='Documentation Status' /></a>
+        <a href='https://readthedocs.org/projects/{{ project_slug }}/'><img src='https://readthedocs.org/projects/{{ project_slug }}/badge/?version=latest' alt='Documentation Status' /></a>
         <a href="https://www.contributor-covenant.org/version/2/1/code_of_conduct/"><img alt="contributor covenant badge" src="https://img.shields.io/badge/Contributor_Covenant-2.1-4BAAAA.svg?logo=contributorcovenant"/></a>
 """
     )
@@ -38,7 +38,7 @@ def update_readme() -> None:
 """
 ## Documentation
 
-See: https://{% include pathjoin('includes', 'project_slug.jinja') %}.readthedocs.io/en/stable/.
+See: https://{{ project_slug }}.readthedocs.io/en/stable/.
 
 ## Install
 """
